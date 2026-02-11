@@ -30,6 +30,7 @@ import time
 from datetime import datetime
 import argparse
 from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+import time
 
 # Configure logging
 logging.basicConfig(
@@ -83,6 +84,10 @@ class ChromaEmbeddingPipelineTextOnly:
         self.collection = self.chroma_client.get_or_create_collection(
             name=collection_name
         )
+
+        logger.info(f"Initialized pipline with collection {collection_name}")
+        logger.info(f"Using embedding model {embedding_model}")
+        logger.info(f"Processing chunk size {chunk_size} with overlap of {chunk_overlap}")
     def chunk_text(self, text: str, metadata: Dict[str, Any]) -> List[Tuple[str, Dict[str, Any]]]:
         """
         Split text into chunks with metadata
@@ -101,55 +106,58 @@ class ChromaEmbeddingPipelineTextOnly:
         counter = 0
         i = 0
         length = len(text)
-        acc = ""
-        while i < length:
+        start = 0
+        end = self.chunk_size + start
+        while i < length - self.chunk_size:
             if counter == (self.chunk_size - self.chunk_overlap):
                 j = 0
                 boundary_detected = False
                 # Used help from ChatGPT with minor changes to this loop 02/04/2026
                 while j < self.chunk_overlap and (i + j) < length:
-                    if '.' in text[j + i]:
+                    if '.' in text[start + j]:
                         boundary_detected = True
                         break
                     j += 1
 
                 if boundary_detected:
-                    acc = acc + text[i:i + j + 1]
                     metadata['chunk_index'] = len(chunks) + 1
                     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
                     metadata['file_types'] = 'text'
                     # OpenAI helped me troubleshoot the metadata 02/04/2026
                     chunkm = dict(metadata)
                     chunks.append((
-                        acc,
+                        text[start:end - (self.chunk_overlap - j)],
                         chunkm 
                     ))
 
-                    i = i + j + 1
+                    start = end - self.chunk_overlap + j
+                    end = self.chunk_size + start
+                    i = start
                 else:
-                    acc = acc + text[i:i + j]
                     metadata['chunk_index'] = len(chunks) + 1
                     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
                     metadata['file_types'] = 'text'
                     chunkm = dict(metadata)
                     chunks.append((
-                        acc,
+                        text[start:end],
                         chunkm
                     ))
-                    i = j + i
+                    start = end - self.chunk_overlap
+                    end = self.chunk_size + start 
+                    i = start
 
-                acc = ""
+                #print(time.time(), start, end, i, j, counter)
+                #acc = ""
                 counter = 0
                 continue
 
-            acc = acc + text[i]
             counter = counter + 1
             i = i + 1
 
-        if acc:
+        if start < length:
             metadata['chunk_index'] = len(chunks) + 1
             chunks.append((
-                acc, 
+                text[start:length], 
                 dict(metadata)
             ))
 

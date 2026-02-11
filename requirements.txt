@@ -155,6 +155,7 @@ pydantic==2.11.7
 pydantic-settings==2.12.0
 pydantic_core==2.33.2
 pydeck==0.9.1
+pysqlite3-binary
 Pygments==2.19.2
 PyPika==0.48.9
 pyproject_hooks==1.2.0
@@ -176,6 +177,7 @@ rfc3987-syntax==1.1.0
 rich==14.1.0
 rpds-py==0.27.0
 rsa==4.9.1
+sacrebleu
 scikit-network==0.33.5
 scipy==1.17.0
 Send2Trash==1.8.3
@@ -221,3 +223,5 @@ xxhash==3.6.0
 yarl==1.22.0
 zipp==3.23.0
 zstandard==0.25.0
+rapidfuzz
+rouge_score
