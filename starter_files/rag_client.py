@@ -23,12 +23,10 @@ def discover_chroma_backends() -> Dict[str, Dict[str, str]]:
         try:
             current_dir = os.listdir(path)
             # help from Claude to understand globbing the sqlite files 02/04/2026
-            print(current_dir)
             sqlite = any('.sqlite3' in f for f in current_dir)
             if sqlite:
                 client = chromadb.PersistentClient(path=path)
                 collections = client.list_collections()
-                print(f"list_collections returned: {collections}")
                 for collection in collections:
                     backends[f"{path}:{collection.name}"] = {
                         "path": str(path),
@@ -66,14 +64,45 @@ def retrieve_documents(collection, query: str, n_results: int = 3,
 
     return results
 
+def deduplicate_results(documents: List[str], metadatas: List[Dict]) -> tuple:
+    # claude ai helped with this helper function 02/11/2026, my original approach was using dict key strings to dedupe.
+    seen = []
+    deduped_docs = []
+    deduped_meta = []
+
+    for text, meta in zip(documents, metadatas):
+        source = metadata.get("source", "")
+        chunk_idx = metadata.get("chunk_index", -1)
+
+        is_adjacent = any(
+            s == source and abs(c - chunk_index) <= 1
+            for s, c in seen
+        )
+
+        # could add in ranged 80-90% of the text being mimicked help from claude
+        # is_correlated = any(
+        #     len(set(text.split())) == len(set(d.split())) / max(len(set(text.split())), 1) > 0.9
+        #     for d in deduped_docs
+        # )
+
+        if is_adjacent:
+            continue
+
+        seen.append((source, chunk_idx))
+        deduped_docs.append(text)
+        deduped_meta.append(meta)
+
+    return (deduped_docs, deduped_meta)
+
 def format_context(documents: List[str], metadatas: List[Dict]) -> str:
     """Format retrieved documents into context"""
     if not documents:
         return ""
     
+    deduped_docs, deduped_meta = deduplicate_results(documents, metadatas)
     # TODO: Initialize list with header text for context section
     context = ["-------EXTRACTED CONTEXT-------"]
-    for text, meta in zip(documents, metadatas):
+    for text, meta in zip(deduped_documents, deduped_metadatas):
         mission = ""
         try:
             mission = meta['mission'] 

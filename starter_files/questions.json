@@ -1,0 +1,26 @@
+{
+    "overview": {
+        "question": "What was the Apollo 11 flight like?",
+        "answer": "The Apollo 11 Moon Landing was a roughly 8-day mission (July 16–24, 1969) that took three astronauts—Neil Armstrong, Buzz Aldrin, and Michael Collins—from Earth to the Moon and back."
+    },
+    "emergency": {
+        "question": "Did an emergency happen on the Apollo 11?",
+        "answer": "An emergency did not occur on the Apollo 11 Moon Landing; the mission experienced tense moments during landing but no in-flight accident or life-threatening system failure."
+    },
+    "disaster_analysis": {
+        "question": "What was the aftermath of the Challenger mission?",
+        "answer": "The Space Shuttle Challenger disaster concluded that the immediate technical cause was failure of the O-ring seals in a field joint of the right solid rocket booster."
+    },
+    "crew": {
+        "question": "Who was on the Apollo 11 flight?",
+        "answer": "The crew of the Apollo 11 Moon Landing were Neil Armstrong (commander), Buzz Aldrin (lunar module pilot), and Michael Collins (command module pilot)."
+    },
+    "technical": {
+        "question": "What type of rocket did the Apollo 13 use?",
+        "answer": "The Apollo 13 mission was launched using a Saturn V rocket."
+    },
+    "timeline": {
+        "question": "How long was the Challenger mission?",
+        "answer": "73 seconds after liftoff"
+    }
+}

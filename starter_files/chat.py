@@ -85,7 +85,6 @@ def display_evaluation_metrics(scores: Dict[str, float]):
     st.sidebar.subheader("📊 Response Quality")
     
     for metric_name, score in scores.items():
-        print(metric_name, score)
         if isinstance(score, dict):
             score = score.get(0, 0.0)
             

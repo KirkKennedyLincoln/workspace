@@ -108,58 +108,68 @@ class ChromaEmbeddingPipelineTextOnly:
         length = len(text)
         start = 0
         end = self.chunk_size + start
-        while i < length - self.chunk_size:
-            if counter == (self.chunk_size - self.chunk_overlap):
-                j = 0
-                boundary_detected = False
-                # Used help from ChatGPT with minor changes to this loop 02/04/2026
-                while j < self.chunk_overlap and (i + j) < length:
-                    if '.' in text[start + j]:
-                        boundary_detected = True
-                        break
-                    j += 1
+        remaining_overlap = ""
+        acc = ""
+        end = min(start + self.chunk_size, length)
+        # help from claude to simplify this 02/11/2026
+        while start < length - self.chunk_size:
+            if end < length:
+                chunk_overlap_start = max(end - self.chunk_overlap, start)
+                chunk_overlap_content = text[chunk_overlap_start:end]
+                find_period = chunk_overlap_content.rfind('.')
 
-                if boundary_detected:
-                    metadata['chunk_index'] = len(chunks) + 1
-                    metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
-                    metadata['file_types'] = 'text'
-                    # OpenAI helped me troubleshoot the metadata 02/04/2026
-                    chunkm = dict(metadata)
-                    chunks.append((
-                        text[start:end - (self.chunk_overlap - j)],
-                        chunkm 
-                    ))
+                if find_period != -1:
+                    end = chunk_overlap_start + find_period + 1
 
-                    start = end - self.chunk_overlap + j
-                    end = self.chunk_size + start
-                    i = start
-                else:
-                    metadata['chunk_index'] = len(chunks) + 1
-                    metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
-                    metadata['file_types'] = 'text'
-                    chunkm = dict(metadata)
-                    chunks.append((
-                        text[start:end],
-                        chunkm
-                    ))
-                    start = end - self.chunk_overlap
-                    end = self.chunk_size + start 
-                    i = start
-
-                #print(time.time(), start, end, i, j, counter)
-                #acc = ""
-                counter = 0
-                continue
-
-            counter = counter + 1
-            i = i + 1
-
-        if start < length:
             metadata['chunk_index'] = len(chunks) + 1
+            metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
+            metadata['file_types'] = 'text'
+            chunkm = dict(metadata)
             chunks.append((
-                text[start:length], 
-                dict(metadata)
+                text[start:end],
+                chunkm
             ))
+
+            start = end
+            # if len(remaining_overlap) > 0:
+            #     metadata['chunk_index'] = len(chunks) + 1
+            #     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
+            #     metadata['file_types'] = 'text'
+            #     chunkm = dict(metadata)
+            #     chunks.append((
+            #         text[start:end - self.chunk_overlap + find_period],
+            #         chunkm
+            #     ))
+            #     start = (end - self.chunk_overlap + find_period) + self.chunk_size
+            # else:
+            #     metadata['chunk_index'] = len(chunks) + 1
+            #     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
+            #     metadata['file_types'] = 'text'
+            #     chunkm = dict(metadata)
+            #     chunks.append((
+            #         text[start:end],
+            #         chunkm
+            #     ))
+            #     start = end + self.chunk_size
+                
+
+            # end = min(start + self.chunk_size, length)
+            # if end == length:
+            #     metadata['chunk_index'] = len(chunks) + 1
+            #     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
+            #     metadata['file_types'] = 'text'
+            #     chunkm = dict(metadata)
+            #     chunks.append((
+            #         text[start:end],
+            #         chunkm
+            #     ))
+
+        # if start < length:
+        #     metadata['chunk_index'] = len(chunks) + 1
+        #     chunks.append((
+        #         text[start:length], 
+        #         dict(metadata)
+        #     ))
 
         return chunks
 
@@ -193,7 +203,6 @@ class ChromaEmbeddingPipelineTextOnly:
         """
         try:
             # Get new embedding
-            print("embedding")
             embedding = self.get_embedding(text)
             
             # Update the document
@@ -310,7 +319,6 @@ class ChromaEmbeddingPipelineTextOnly:
         try:
             with open(file_path, 'r', encoding='cp1252', errors='replace') as f:
                 content = f.read()
-            # print(f"\033[91m{content}\033[0m") 
             if not content.strip():
                 return []
             
@@ -466,6 +474,10 @@ class ChromaEmbeddingPipelineTextOnly:
         stats = {'added': 0, 'updated': 0, 'skipped': 0}
         
         for text, metadata in documents:
+            if update_mode == 'replace' and exists:
+                existing_ids = self.get_file_documents(file_path)
+                self.collection.delete(ids=existing_ids)
+            
             doc_id = self.generate_document_id(file_path, metadata)
             exists = self.check_document_exists(doc_id)
 
@@ -474,7 +486,6 @@ class ChromaEmbeddingPipelineTextOnly:
                 continue
 
             elif update_mode == 'update' and exists:
-                print("updating")
                 self.update_document(doc_id, text, metadata)
                 stats['updated'] += 1
                 continue
@@ -518,12 +529,10 @@ class ChromaEmbeddingPipelineTextOnly:
 
         # text_files = [Path(base_path) / "AS13_TEC.txt"]
         text_files = self.scan_text_files_only(Path(base_path))
-        print(text_files)
-        # print(text_files)
         for path in text_files:
             try:
                 chunks = self.process_text_file(path)
-                self.add_documents_to_collection(chunks, path, update_mode)
+                self.add_documents_to_collection(chunks, path, update_mode=update_mode)
             except Exception as e:
                 print(e)
             print(f"Processing File: {path}")
