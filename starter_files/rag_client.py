@@ -70,12 +70,12 @@ def deduplicate_results(documents: List[str], metadatas: List[Dict]) -> tuple:
     deduped_docs = []
     deduped_meta = []
 
-    for text, meta in zip(documents, metadatas):
+    for text, metadata in zip(documents, metadatas):
         source = metadata.get("source", "")
         chunk_idx = metadata.get("chunk_index", -1)
 
         is_adjacent = any(
-            s == source and abs(c - chunk_index) <= 1
+            s == source and abs(c - chunk_idx) <= 1
             for s, c in seen
         )
 
@@ -90,7 +90,7 @@ def deduplicate_results(documents: List[str], metadatas: List[Dict]) -> tuple:
 
         seen.append((source, chunk_idx))
         deduped_docs.append(text)
-        deduped_meta.append(meta)
+        deduped_meta.append(metadata)
 
     return (deduped_docs, deduped_meta)
 
@@ -102,7 +102,7 @@ def format_context(documents: List[str], metadatas: List[Dict]) -> str:
     deduped_docs, deduped_meta = deduplicate_results(documents, metadatas)
     # TODO: Initialize list with header text for context section
     context = ["-------EXTRACTED CONTEXT-------"]
-    for text, meta in zip(deduped_documents, deduped_metadatas):
+    for text, meta in zip(deduped_docs, deduped_meta):
         mission = ""
         try:
             mission = meta['mission'] 

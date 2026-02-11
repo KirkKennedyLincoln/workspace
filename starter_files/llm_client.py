@@ -31,6 +31,5 @@ def generate_response(openai_key: str, user_message: str, context: str,
         messages=messages
     )
 
-    conversation_history.extend({"role": "assistant", "content": response})
-    print(response)
+    conversation_history.append({"role": "assistant", "content": response})
     return response.choices[0].message.content

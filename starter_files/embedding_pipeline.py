@@ -103,73 +103,33 @@ class ChromaEmbeddingPipelineTextOnly:
             return [(text, metadata)]
 
         chunks = []
-        counter = 0
-        i = 0
-        length = len(text)
         start = 0
         end = self.chunk_size + start
         remaining_overlap = ""
+        length = len(text)
         acc = ""
         end = min(start + self.chunk_size, length)
         # help from claude to simplify this 02/11/2026
-        while start < length - self.chunk_size:
+        while start < length:
+            end = min(start + self.chunk_size, length)
             if end < length:
-                chunk_overlap_start = max(end - self.chunk_overlap, start)
-                chunk_overlap_content = text[chunk_overlap_start:end]
-                find_period = chunk_overlap_content.rfind('.')
-
-                if find_period != -1:
-                    end = chunk_overlap_start + find_period + 1
+                overlap_zone_start = max(end - self.chunk_overlap, start)
+                overlap_text = text[overlap_zone_start:end]
+                last_period = overlap_text.rfind('.')
+                if last_period != -1:
+                    end = overlap_zone_start + last_period + 1
 
             metadata['chunk_index'] = len(chunks) + 1
-            metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
             metadata['file_types'] = 'text'
-            chunkm = dict(metadata)
-            chunks.append((
-                text[start:end],
-                chunkm
-            ))
+            chunks.append((text[start:end], dict(metadata)))
 
-            start = end
-            # if len(remaining_overlap) > 0:
-            #     metadata['chunk_index'] = len(chunks) + 1
-            #     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
-            #     metadata['file_types'] = 'text'
-            #     chunkm = dict(metadata)
-            #     chunks.append((
-            #         text[start:end - self.chunk_overlap + find_period],
-            #         chunkm
-            #     ))
-            #     start = (end - self.chunk_overlap + find_period) + self.chunk_size
-            # else:
-            #     metadata['chunk_index'] = len(chunks) + 1
-            #     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
-            #     metadata['file_types'] = 'text'
-            #     chunkm = dict(metadata)
-            #     chunks.append((
-            #         text[start:end],
-            #         chunkm
-            #     ))
-            #     start = end + self.chunk_size
-                
+            if end >= length:
+                break
+            start = end - self.chunk_overlap
 
-            # end = min(start + self.chunk_size, length)
-            # if end == length:
-            #     metadata['chunk_index'] = len(chunks) + 1
-            #     metadata['chunk_overlap_remaining'] = self.chunk_overlap - j
-            #     metadata['file_types'] = 'text'
-            #     chunkm = dict(metadata)
-            #     chunks.append((
-            #         text[start:end],
-            #         chunkm
-            #     ))
-
-        # if start < length:
-        #     metadata['chunk_index'] = len(chunks) + 1
-        #     chunks.append((
-        #         text[start:length], 
-        #         dict(metadata)
-        #     ))
+        if start < length:
+            metadata['chunk_index'] = len(chunks) + 1
+            chunks.append((text[start:length], dict(metadata)))
 
         return chunks
 
@@ -472,12 +432,12 @@ class ChromaEmbeddingPipelineTextOnly:
             return {'added': 0, 'updated': 0, 'skipped': 0}
         
         stats = {'added': 0, 'updated': 0, 'skipped': 0}
-        
+        if update_mode == 'replace':
+            existing_ids = self.get_file_documents(file_path)
+            if existing_ids:
+                self.collection.delete(ids=existing_ids)  
+
         for text, metadata in documents:
-            if update_mode == 'replace' and exists:
-                existing_ids = self.get_file_documents(file_path)
-                self.collection.delete(ids=existing_ids)
-            
             doc_id = self.generate_document_id(file_path, metadata)
             exists = self.check_document_exists(doc_id)
 
