@@ -483,19 +483,30 @@ class ChromaEmbeddingPipelineTextOnly:
         for path in text_files:
             try:
                 chunks = self.process_text_file(path)
-                self.add_documents_to_collection(chunks, path, update_mode=update_mode)
+                result = self.add_documents_to_collection(chunks, path, update_mode=update_mode)
+                # Claude AI helped me understand missing the mission dict details.
+                stats['files_processed'] += 1
+                stats['total_chunks'] += len(chunks)
+                stats['documents_added'] += result['added']
+                stats['documents_updated'] += result['updated']
+                stats['documents_skipped'] += result['skipped']
+
+                mission = self.extract_mission_from_path(path)
+                if mission not in stats['missions']:
+                    stats['missions'][mission] = {'files': 0, 'chunks': 0, 'added': 0, 'updated': 0, 'skipped': 0}
+                stats['missions'][mission]['files'] += 1
+                stats['missions'][mission]['chunks'] += len(chunks)
+                stats['missions'][mission]['added'] += result['added']
+                stats['missions'][mission]['updated'] += result['updated']
+                stats['missions'][mission]['skipped'] += result['skipped']
             except Exception as e:
-            print(f"Processing File: {path}")
-            stats['files_processed'] += 1
-            stats['documents_added'] += 1
-            stats['total_chunks'] += 1
+                logger.error(f"Error processing {path}: {e}")
+                stats['errors'] += 1
         
         return stats
     
     def get_collection_info(self) -> Dict[str, Any]:
         """Get information about the ChromaDB collection"""
-        # collection = self.chroma_client.get_collection(self.collection_name)
-
         return {'collection_name': self.collection_name, 'document_count': self.collection.count()}
         
     

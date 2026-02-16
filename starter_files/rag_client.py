@@ -78,12 +78,6 @@ def deduplicate_results(documents: List[str], metadatas: List[Dict]) -> tuple:
             for s, c in seen
         )
 
-        # could add in ranged 80-90% of the text being mimicked help from claude
-        # is_correlated = any(
-        #     len(set(text.split())) == len(set(d.split())) / max(len(set(text.split())), 1) > 0.9
-        #     for d in deduped_docs
-        # )
-
         if is_adjacent:
             continue
 
@@ -109,11 +103,11 @@ def format_context(documents: List[str], metadatas: List[Dict]) -> str:
         # source = source.replace("_", " ")
         # source = source.capitalize()
 
-        category = meta.get('category', 'Unknown') 
+        category = meta.get('document_category', 'Unknown')
         category = category.replace("_", " ")
         category = category.capitalize()
 
-        header = f"{meta['chunk_index']}:{mission}:{source}:{category}"
+        header = f"{meta.get('chunk_index', 'N/A')}:{mission}:{source}:{category}"
 
         context.append(header)
 
