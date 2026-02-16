@@ -105,10 +105,31 @@ if __name__ == "__main__":
     key = os.environ.get("OPENAI_API_KEY")
     results = run_test_questions(collection, key)
 
-    for r in results:
+    precision_scores = []
+    relevancy_scores = []
+    faithfulness_scores = []
+    finish_dict = {}
+    for i, r in enumerate(results):
+        finish_dict[r["QA"]['question']] = r["QA"]['answer']
         print(f"\n[{r["QA"]['question']}] {r["QA"]['answer']}\n")
         print(f"""
             LLM Context Precision Without Reference: {r["metrics"]['llm_context_precision_without_reference'][0]}\n
             Answer Relevancy: {r["metrics"]['answer_relevancy'][0]}\n
             Faithfulness: {r["metrics"]['faithfulness'][0]}\n
         """)
+
+        precision_scores.append(r["metrics"]['llm_context_precision_without_reference'][0])
+        relevancy_scores.append(r["metrics"]['answer_relevancy'][0])
+        faithfulness_scores.append(r["metrics"]['faithfulness'][0])
+
+
+    print(f"""
+            ======OVERALL STATISTICS======
+            LLM Context Precision Without Reference: {sum(precision_scores)/len(precision_scores)}\n
+            Answer Relevancy: {sum(relevancy_scores)/len(relevancy_scores)}\n
+            Faithfulness: {sum(faithfulness_scores)/len(faithfulness_scores)}\n
+        """)
+    with open('./answers.json', 'w') as f:
+        json.dump(finish_dict, f)
+
+    
