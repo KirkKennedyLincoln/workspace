@@ -5,7 +5,7 @@ def generate_response(openai_key: str, user_message: str, context: str,
                      conversation_history: List[Dict], model: str = "gpt-3.5-turbo") -> str:
     """Generate response using OpenAI with context"""
     system_prompt = f"""You are a NASA document assistant.
-        - Carefully read the context below and answer based on the context.
+        - Always cite the source document and mission when referencing specific facts.
         - If you cannot find proper information in the documents provided the response with "Apologies, but I don't have enough information to answer that"
         - Do not make up or hallucinate any information or search through outside sources to produce information.
         - Be clear and academic in your responses, keep things brief and concise.
@@ -31,5 +31,5 @@ def generate_response(openai_key: str, user_message: str, context: str,
         messages=messages
     )
 
-    conversation_history.append({"role": "assistant", "content": response})
+    conversation_history.append({"role": "assistant", "content": response.choices[0].message.content})
     return response.choices[0].message.content

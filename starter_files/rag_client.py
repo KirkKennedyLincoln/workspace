@@ -37,7 +37,6 @@ def discover_chroma_backends() -> Dict[str, Dict[str, str]]:
                         "doc_count": collection.count()
                     }
         except Exception as e:
-            print("Excpetion", e)
             continue
 
     return backends
@@ -100,30 +99,17 @@ def format_context(documents: List[str], metadatas: List[Dict]) -> str:
         return ""
     
     deduped_docs, deduped_meta = deduplicate_results(documents, metadatas)
-    # TODO: Initialize list with header text for context section
     context = ["-------EXTRACTED CONTEXT-------"]
     for text, meta in zip(deduped_docs, deduped_meta):
-        mission = ""
-        try:
-            mission = meta['mission'] 
-        except KeyError:
-            mission = 'Unknown'
-
+        mission = meta.get('mission', 'Unknown')
         mission = mission.replace("_", " ")
         mission = mission.capitalize()
 
-        source = ""
-        try:
-            source = meta['source'] 
-        except KeyError:
-            source = 'Unknown'
+        source = meta.get('source', 'Unknown') 
+        # source = source.replace("_", " ")
+        # source = source.capitalize()
 
-        category = ""
-        try:
-            category = meta['category'] 
-        except KeyError:
-            category = 'Unknown'
-
+        category = meta.get('category', 'Unknown') 
         category = category.replace("_", " ")
         category = category.capitalize()
 

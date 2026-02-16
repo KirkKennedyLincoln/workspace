@@ -28,7 +28,6 @@ def run_test_questions(collection, openai_key: str, n_docs: int = 3,
         context = ""
         contexts_list = []
         for topic in data.values():
-            print(topic)
             try:
                 docs_result = retrieve_documents(
                     collection, 
@@ -44,7 +43,6 @@ def run_test_questions(collection, openai_key: str, n_docs: int = 3,
                 print(e)
             my_message = generate_response(openai_key=openai_key, user_message=topic["question"], context=context, 
                     conversation_history=[], model="gpt-3.5-turbo")
-            print(f"\n\n\n\n\n\n\n\n{my_message}\n\n\n\n\n\n\n\n\n")
             my_tests.append({
                 "metrics": response_quality(topic["question"], my_message, contexts_list),
                 "QA": {
@@ -73,7 +71,6 @@ def response_quality(question: str, answer: str, contexts: List[str]) -> Dict[st
         base_url="https://openai.vocareum.com/v1"
     )
     evaluator_embeddings = LangchainEmbeddingsWrapper(ellm)
-    # print("\n\n\n\n\nLOOOOOOOOOOOOOOKKKKK\n\n\n",answer, question, contexts)
     sample = SingleTurnSample(
         user_input=question,
         response=answer,
@@ -107,7 +104,6 @@ if __name__ == "__main__":
     )
     key = os.environ.get("OPENAI_API_KEY")
     results = run_test_questions(collection, key)
-    #print(json.dumps(results, indent=2))
 
     for r in results:
         print(f"\n[{r["QA"]['question']}] {r["QA"]['answer']}\n")

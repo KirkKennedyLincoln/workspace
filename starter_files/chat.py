@@ -107,7 +107,6 @@ def display_evaluation_metrics(scores: Dict[str, float]):
             st.sidebar.progress(score)
 
 def main():
-    discover_chroma_backends()
     st.title("🚀 NASA Space Mission Chat with Evaluation")
     st.markdown("Chat with AI about NASA space missions with real-time quality evaluation")
     
@@ -152,7 +151,7 @@ def main():
         openai_key = st.text_input(
             "OpenAI API Key", 
             type="password",
-            value=os.getenv("OPENAI_API_KEY", "voc-13870242921266774737625696f7f3e929075.67762701"),
+            value=os.getenv("OPENAI_API_KEY", "default-api-key"),
             help="Enter your OpenAI API key"
         )
         
@@ -161,6 +160,7 @@ def main():
             st.stop()
         else:
             os.environ["CHROMA_OPENAI_API_KEY"] = openai_key
+            os.environ["OPENAI_API_KEY"] = openai_key
         
         # Model selection
         model_choice = st.selectbox(

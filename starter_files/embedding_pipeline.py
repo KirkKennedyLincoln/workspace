@@ -30,7 +30,6 @@ import time
 from datetime import datetime
 import argparse
 from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
-import time
 
 # Configure logging
 logging.basicConfig(
@@ -68,7 +67,6 @@ class ChromaEmbeddingPipelineTextOnly:
             api_key=openai_api_key,
             base_url="https://openai.vocareum.com/v1"
         )
-        # TODO: Store configuration parameters
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
         self.chroma_persist_directory = chroma_persist_directory
@@ -79,7 +77,6 @@ class ChromaEmbeddingPipelineTextOnly:
         self.api_key=openai_api_key
         self.embedding_model = embedding_model
         self.chroma_client = chromadb.PersistentClient(path=chroma_persist_directory)
-        # TODO: Create or get collection
         self.collection_name = collection_name
         self.collection = self.chroma_client.get_or_create_collection(
             name=collection_name
@@ -104,10 +101,7 @@ class ChromaEmbeddingPipelineTextOnly:
 
         chunks = []
         start = 0
-        end = self.chunk_size + start
-        remaining_overlap = ""
         length = len(text)
-        acc = ""
         end = min(start + self.chunk_size, length)
         # help from claude to simplify this 02/11/2026
         while start < length:
@@ -250,15 +244,12 @@ class ChromaEmbeddingPipelineTextOnly:
         Returns:
             Embedding vector
         """
-        # TODO: Call OpenAI embeddings API
         resp = self.client.embeddings.create(
             model=self.embedding_model,
             input=text
         )
         return resp.data[0].embedding
         
-        # TODO: Add error handling
-
     def generate_document_id(self, file_path: Path, metadata: Dict[str, Any]) -> str:
         """
         Generate stable document ID based on file path and chunk position
@@ -494,25 +485,18 @@ class ChromaEmbeddingPipelineTextOnly:
                 chunks = self.process_text_file(path)
                 self.add_documents_to_collection(chunks, path, update_mode=update_mode)
             except Exception as e:
-                print(e)
             print(f"Processing File: {path}")
             stats['files_processed'] += 1
             stats['documents_added'] += 1
             stats['total_chunks'] += 1
-        # TODO: Get files to process
-        # TODO: Loop through each file
-        # TODO: Process file and add to collection
-        # TODO: Update statistics
-        # TODO: Handle errors gracefully
         
         return stats
     
     def get_collection_info(self) -> Dict[str, Any]:
         """Get information about the ChromaDB collection"""
-        # TODO: Return collection name, document count, metadata
-        collection = self.chroma_client.get_collection(self.collection_name)
+        # collection = self.chroma_client.get_collection(self.collection_name)
 
-        return collection.get()
+        return {'collection_name': self.collection_name, 'document_count': self.collection.count()}
         
     
     def query_collection(self, query_text: str, n_results: int = 5) -> Dict[str, Any]:
