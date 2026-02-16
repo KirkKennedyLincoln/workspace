@@ -1,57 +1,151 @@
-2026-02-16 15:24:52,864 - INFO - Initializing ChromaDB Embedding Pipeline...
-2026-02-16 15:24:52,964 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
-2026-02-16 15:24:53,115 - INFO - Initialized pipline with collection nasa_space_missions_text
-2026-02-16 15:24:53,116 - INFO - Using embedding model text-embedding-3-small
-2026-02-16 15:24:53,116 - INFO - Processing chunk size 5000 with overlap of 1000
-2026-02-16 15:24:53,116 - INFO - Starting text data processing with update mode: skip
-2026-02-16 15:24:53,116 - INFO - Scanning directory: rag_client.py
-2026-02-16 15:24:53,116 - INFO - Found 0 text files in rag_client.py
-2026-02-16 15:24:53,116 - INFO - Scanning directory: __pycache__
-2026-02-16 15:24:53,116 - INFO - Found 0 text files in __pycache__
-2026-02-16 15:24:53,116 - INFO - Scanning directory: embedding_pipeline.py
-2026-02-16 15:24:53,116 - INFO - Found 0 text files in embedding_pipeline.py
-2026-02-16 15:24:53,117 - INFO - Scanning directory: AS13_TEC.txt
-2026-02-16 15:24:53,117 - INFO - Found 0 text files in AS13_TEC.txt
-2026-02-16 15:24:53,117 - INFO - Scanning directory: EVALUATION_RUBRIC.md
-2026-02-16 15:24:53,117 - INFO - Found 0 text files in EVALUATION_RUBRIC.md
-2026-02-16 15:24:53,117 - INFO - Scanning directory: chroma_db_openai
-2026-02-16 15:24:53,117 - INFO - Found 0 text files in chroma_db_openai
-2026-02-16 15:24:53,117 - INFO - Scanning directory: llm_client.py
-2026-02-16 15:24:53,117 - INFO - Found 0 text files in llm_client.py
-2026-02-16 15:24:53,117 - INFO - Scanning directory: questions.json
-2026-02-16 15:24:53,117 - INFO - Found 0 text files in questions.json
-2026-02-16 15:24:53,117 - INFO - Scanning directory: data_text
-2026-02-16 15:24:53,118 - INFO - Found 12 text files in data_text
-2026-02-16 15:24:53,118 - INFO - Scanning directory: chat.py
-2026-02-16 15:24:53,118 - INFO - Found 0 text files in chat.py
-2026-02-16 15:24:53,118 - INFO - Scanning directory: ragas_evaluator.py
-2026-02-16 15:24:53,118 - INFO - Found 0 text files in ragas_evaluator.py
-2026-02-16 15:24:53,118 - INFO - Scanning directory: chroma_embedding_text_only.log
-2026-02-16 15:24:53,118 - INFO - Found 0 text files in chroma_embedding_text_only.log
-2026-02-16 15:24:53,118 - INFO - Total text files to process: 12
-2026-02-16 15:24:53,118 - INFO - Files by mission:
-2026-02-16 15:24:53,118 - INFO -   challenger: 3 files
-2026-02-16 15:24:53,118 - INFO -   apollo_13: 3 files
-2026-02-16 15:24:53,118 - INFO -   apollo_11: 6 files
-2026-02-16 15:35:13,946 - INFO - ============================================================
-2026-02-16 15:35:13,946 - INFO - PROCESSING COMPLETE
-2026-02-16 15:35:13,946 - INFO - ============================================================
-2026-02-16 15:35:13,946 - INFO - Files processed: 12
-2026-02-16 15:35:13,946 - INFO - Total chunks created: 1597
-2026-02-16 15:35:13,947 - INFO - Documents added to collection: 1597
-2026-02-16 15:35:13,947 - INFO - Documents updated in collection: 0
-2026-02-16 15:35:13,947 - INFO - Documents skipped (already exist): 0
-2026-02-16 15:35:13,947 - INFO - Errors: 0
-2026-02-16 15:35:13,947 - INFO - Processing time: 620.83 seconds
-2026-02-16 15:35:13,947 - INFO - 
+2026-02-16 16:36:19,885 - INFO - Initializing ChromaDB Embedding Pipeline...
+2026-02-16 16:36:20,007 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-16 16:36:20,352 - INFO - Initialized pipline with collection nasa_space_missions_text
+2026-02-16 16:36:20,353 - INFO - Using embedding model text-embedding-3-small
+2026-02-16 16:36:20,353 - INFO - Processing chunk size 5000 with overlap of 1000
+2026-02-16 16:36:20,353 - INFO - Starting text data processing with update mode: skip
+2026-02-16 16:36:20,353 - INFO - Scanning directory: rag_client.py
+2026-02-16 16:36:20,353 - INFO - Found 0 text files in rag_client.py
+2026-02-16 16:36:20,353 - INFO - Scanning directory: __pycache__
+2026-02-16 16:36:20,354 - INFO - Found 0 text files in __pycache__
+2026-02-16 16:36:20,354 - INFO - Scanning directory: embedding_pipeline.py
+2026-02-16 16:36:20,354 - INFO - Found 0 text files in embedding_pipeline.py
+2026-02-16 16:36:20,354 - INFO - Scanning directory: AS13_TEC.txt
+2026-02-16 16:36:20,354 - INFO - Found 0 text files in AS13_TEC.txt
+2026-02-16 16:36:20,354 - INFO - Scanning directory: EVALUATION_RUBRIC.md
+2026-02-16 16:36:20,354 - INFO - Found 0 text files in EVALUATION_RUBRIC.md
+2026-02-16 16:36:20,354 - INFO - Scanning directory: chroma_db_openai
+2026-02-16 16:36:20,354 - INFO - Found 0 text files in chroma_db_openai
+2026-02-16 16:36:20,354 - INFO - Scanning directory: llm_client.py
+2026-02-16 16:36:20,354 - INFO - Found 0 text files in llm_client.py
+2026-02-16 16:36:20,355 - INFO - Scanning directory: questions.json
+2026-02-16 16:36:20,355 - INFO - Found 0 text files in questions.json
+2026-02-16 16:36:20,355 - INFO - Scanning directory: data_text
+2026-02-16 16:36:20,355 - INFO - Found 12 text files in data_text
+2026-02-16 16:36:20,355 - INFO - Scanning directory: chat.py
+2026-02-16 16:36:20,355 - INFO - Found 0 text files in chat.py
+2026-02-16 16:36:20,355 - INFO - Scanning directory: ragas_evaluator.py
+2026-02-16 16:36:20,355 - INFO - Found 0 text files in ragas_evaluator.py
+2026-02-16 16:36:20,356 - INFO - Scanning directory: chroma_embedding_text_only.log
+2026-02-16 16:36:20,356 - INFO - Found 0 text files in chroma_embedding_text_only.log
+2026-02-16 16:36:20,356 - INFO - Total text files to process: 12
+2026-02-16 16:36:20,356 - INFO - Files by mission:
+2026-02-16 16:36:20,356 - INFO -   challenger: 3 files
+2026-02-16 16:36:20,356 - INFO -   apollo_13: 3 files
+2026-02-16 16:36:20,356 - INFO -   apollo_11: 6 files
+2026-02-16 16:47:17,516 - INFO - ============================================================
+2026-02-16 16:47:17,517 - INFO - PROCESSING COMPLETE
+2026-02-16 16:47:17,517 - INFO - ============================================================
+2026-02-16 16:47:17,517 - INFO - Files processed: 12
+2026-02-16 16:47:17,517 - INFO - Total chunks created: 1597
+2026-02-16 16:47:17,517 - INFO - Documents added to collection: 1597
+2026-02-16 16:47:17,517 - INFO - Documents updated in collection: 0
+2026-02-16 16:47:17,517 - INFO - Documents skipped (already exist): 0
+2026-02-16 16:47:17,517 - INFO - Errors: 0
+2026-02-16 16:47:17,517 - INFO - Processing time: 657.16 seconds
+2026-02-16 16:47:17,517 - INFO - 
 Mission breakdown:
-2026-02-16 15:35:13,947 - INFO -   challenger: 3 files, 100 chunks
-2026-02-16 15:35:13,947 - INFO -     Added: 100, Updated: 0, Skipped: 0
-2026-02-16 15:35:13,947 - INFO -   apollo_13: 3 files, 636 chunks
-2026-02-16 15:35:13,947 - INFO -     Added: 636, Updated: 0, Skipped: 0
-2026-02-16 15:35:13,947 - INFO -   apollo_11: 6 files, 861 chunks
-2026-02-16 15:35:13,947 - INFO -     Added: 861, Updated: 0, Skipped: 0
-2026-02-16 15:35:13,948 - INFO - 
+2026-02-16 16:47:17,517 - INFO -   challenger: 3 files, 100 chunks
+2026-02-16 16:47:17,517 - INFO -     Added: 100, Updated: 0, Skipped: 0
+2026-02-16 16:47:17,517 - INFO -   apollo_13: 3 files, 636 chunks
+2026-02-16 16:47:17,517 - INFO -     Added: 636, Updated: 0, Skipped: 0
+2026-02-16 16:47:17,517 - INFO -   apollo_11: 6 files, 861 chunks
+2026-02-16 16:47:17,517 - INFO -     Added: 861, Updated: 0, Skipped: 0
+2026-02-16 16:47:17,519 - INFO - 
 Collection: nasa_space_missions_text
-2026-02-16 15:35:13,949 - INFO - Total documents in collection: 1597
-2026-02-16 15:35:13,949 - INFO - Pipeline completed successfully!
+2026-02-16 16:47:17,519 - INFO - Total documents in collection: 1597
+2026-02-16 16:47:17,519 - INFO - Pipeline completed successfully!
+2026-02-16 16:51:35,824 - INFO - Initializing ChromaDB Embedding Pipeline...
+2026-02-16 16:51:35,919 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-16 16:51:36,025 - INFO - Initialized pipline with collection nasa_space_missions_text
+2026-02-16 16:51:36,025 - INFO - Using embedding model text-embedding-3-small
+2026-02-16 16:51:36,025 - INFO - Processing chunk size 5000 with overlap of 1000
+2026-02-16 16:51:36,025 - INFO - Starting text data processing with update mode: skip
+2026-02-16 16:51:36,025 - INFO - Scanning directory: rag_client.py
+2026-02-16 16:51:36,025 - INFO - Found 0 text files in rag_client.py
+2026-02-16 16:51:36,025 - INFO - Scanning directory: __pycache__
+2026-02-16 16:51:36,025 - INFO - Found 0 text files in __pycache__
+2026-02-16 16:51:36,026 - INFO - Scanning directory: embedding_pipeline.py
+2026-02-16 16:51:36,026 - INFO - Found 0 text files in embedding_pipeline.py
+2026-02-16 16:51:36,026 - INFO - Scanning directory: AS13_TEC.txt
+2026-02-16 16:51:36,026 - INFO - Found 0 text files in AS13_TEC.txt
+2026-02-16 16:51:36,026 - INFO - Scanning directory: EVALUATION_RUBRIC.md
+2026-02-16 16:51:36,026 - INFO - Found 0 text files in EVALUATION_RUBRIC.md
+2026-02-16 16:51:36,026 - INFO - Scanning directory: chroma_db_openai
+2026-02-16 16:51:36,026 - INFO - Found 0 text files in chroma_db_openai
+2026-02-16 16:51:36,026 - INFO - Scanning directory: llm_client.py
+2026-02-16 16:51:36,026 - INFO - Found 0 text files in llm_client.py
+2026-02-16 16:51:36,026 - INFO - Scanning directory: questions.json
+2026-02-16 16:51:36,026 - INFO - Found 0 text files in questions.json
+2026-02-16 16:51:36,027 - INFO - Scanning directory: data_text
+2026-02-16 16:51:36,027 - INFO - Found 12 text files in data_text
+2026-02-16 16:51:36,027 - INFO - Scanning directory: chat.py
+2026-02-16 16:51:36,027 - INFO - Found 0 text files in chat.py
+2026-02-16 16:51:36,027 - INFO - Scanning directory: ragas_evaluator.py
+2026-02-16 16:51:36,027 - INFO - Found 0 text files in ragas_evaluator.py
+2026-02-16 16:51:36,027 - INFO - Scanning directory: chroma_embedding_text_only.log
+2026-02-16 16:51:36,027 - INFO - Found 0 text files in chroma_embedding_text_only.log
+2026-02-16 16:51:36,027 - INFO - Total text files to process: 12
+2026-02-16 16:51:36,028 - INFO - Files by mission:
+2026-02-16 16:51:36,028 - INFO -   challenger: 3 files
+2026-02-16 16:51:36,028 - INFO -   apollo_13: 3 files
+2026-02-16 16:51:36,028 - INFO -   apollo_11: 6 files
+2026-02-16 16:51:37,027 - INFO - ============================================================
+2026-02-16 16:51:37,027 - INFO - PROCESSING COMPLETE
+2026-02-16 16:51:37,027 - INFO - ============================================================
+2026-02-16 16:51:37,028 - INFO - Files processed: 12
+2026-02-16 16:51:37,028 - INFO - Total chunks created: 1597
+2026-02-16 16:51:37,028 - INFO - Documents added to collection: 0
+2026-02-16 16:51:37,028 - INFO - Documents updated in collection: 0
+2026-02-16 16:51:37,028 - INFO - Documents skipped (already exist): 1597
+2026-02-16 16:51:37,028 - INFO - Errors: 0
+2026-02-16 16:51:37,028 - INFO - Processing time: 1.00 seconds
+2026-02-16 16:51:37,028 - INFO - 
+Mission breakdown:
+2026-02-16 16:51:37,028 - INFO -   challenger: 3 files, 100 chunks
+2026-02-16 16:51:37,028 - INFO -     Added: 0, Updated: 0, Skipped: 100
+2026-02-16 16:51:37,028 - INFO -   apollo_13: 3 files, 636 chunks
+2026-02-16 16:51:37,028 - INFO -     Added: 0, Updated: 0, Skipped: 636
+2026-02-16 16:51:37,029 - INFO -   apollo_11: 6 files, 861 chunks
+2026-02-16 16:51:37,029 - INFO -     Added: 0, Updated: 0, Skipped: 861
+2026-02-16 16:51:37,030 - INFO - 
+Collection: nasa_space_missions_text
+2026-02-16 16:51:37,030 - INFO - Total documents in collection: 1597
+2026-02-16 16:51:37,030 - INFO - 
+Testing query: 'What did they eat on the Apollo 13?'
+2026-02-16 16:51:37,402 - INFO - Found 5 results:
+2026-02-16 16:51:37,402 - INFO - Result 1: MIRFAK (10), ENH
+ALDEBARAN (11), ENH
+:30
+:40
+:50
+153:00
+MISSION
+EDITION
+DATE
+TIME
+DAY/REV
+PAGE
+APOLLO 11
+FINAL
+JULY 1, 1969
+151:00 - 153:00
+7/TEC
+3-110
+MSC Form 29 (May 69)
+FLIGHT PLANNING BRANCH
+
+---...
+2026-02-16 16:51:37,402 - INFO - Result 2: we've touched the moon, Td like to trace through
+a little bit for you the developments that have taken place in the
+404
+
+--- PAGE 407 ---
+7-22-69
+APOLLO 11 - MISSION COMMENTARY
+CDT 20:10 - GET 155:37 ...
+2026-02-16 16:51:37,402 - INFO - Result 3: lo 11 in their
+prayers. President Nixon's worship service at the White House is also dedicated to
+the mission, and our fellow astronaut, Frank Borman, is still in there pitching and
+will read the pass...
+2026-02-16 16:51:37,402 - INFO - Pipeline completed successfully!
