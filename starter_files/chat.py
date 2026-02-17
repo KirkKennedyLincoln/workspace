@@ -89,6 +89,9 @@ def display_evaluation_metrics(scores: Dict[str, float]):
             score = score.get(0, 0.0)
             
         if isinstance(score, (int, float)):
+            import math
+            if math.isnan(score):
+                continue
             # Color code based on score
             if score >= 0.8:
                 color = "green"

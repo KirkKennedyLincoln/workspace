@@ -121,10 +121,6 @@ class ChromaEmbeddingPipelineTextOnly:
                 break
             start = end - self.chunk_overlap
 
-        if start < length:
-            metadata['chunk_index'] = len(chunks) + 1
-            chunks.append((text[start:length], dict(metadata)))
-
         return chunks
 
     def check_document_exists(self, doc_id: str) -> bool:
@@ -157,13 +153,14 @@ class ChromaEmbeddingPipelineTextOnly:
         """
         try:
             # Get new embedding
-            embedding = self.get_embedding(text)
+            #Error retrieving documents: Collection expecting embedding with dimension of 1536, got 384
+            # embedding = self.get_embedding(text)
             
             # Update the document
             self.collection.update(
                 ids=[doc_id],
                 documents=[text],
-                metadatas=[metadata]
+                metadatas=[metadata],
                 #embeddings=[embedding]
             )
             logger.debug(f"Updated document: {doc_id}")
@@ -440,13 +437,13 @@ class ChromaEmbeddingPipelineTextOnly:
                 self.update_document(doc_id, text, metadata)
                 stats['updated'] += 1
                 continue
-
-            # embedding = self.get_embedding(text)
-
+            #Error retrieving documents: Collection expecting embedding with dimension of 1536, got 384
+            #embedding = self.get_embedding(text)
+            # The embedding doesn't work because I am using vocareum, this is the best I can do, to use the deault embeddings.
             self.collection.add(
                 ids=[doc_id],
                 documents=[text],
-                metadatas=[metadata]
+                metadatas=[metadata],
                 #embeddings=embedding if isinstance(embedding[0], float) else embedding[0]
             )
             stats['added'] += 1
